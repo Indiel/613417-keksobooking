@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Александра Иваненко](https://up.htmlacademy.ru/javascript/14/user/613417).
-* Наставник: `Неизвестно`.
+* Наставник: [Интернет](https://www.google.ru/).
 
 ---
 
