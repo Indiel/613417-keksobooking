@@ -82,7 +82,7 @@ var renderAdvertisements = function () {
         y: locationY
       }
     };
-  };
+  }
 
   return advertisements;
 };
