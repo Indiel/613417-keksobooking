@@ -47,7 +47,7 @@ var createFeatures = function (arr) {
   var featuresElementLength = renderValue(0, copyArr.length - 1);
   for (var i = 0; i < featuresElementLength; i++) {
     featuresElement[i] = String(copyArr.splice(renderValue(0, copyArr.length - 1), 1));
-  };
+  }
 
   return featuresElement;
 };
@@ -118,7 +118,7 @@ var createFragment = function (advertisement) {
     feature.classList.add('popup__feature');
     feature.classList.add('popup__feature--' + advertisement.offer.features[j]);
     features.appendChild(feature);
-  };
+  }
 
   var galleryPhotos = [];
   galleryPhotos[0] = fragment.querySelector('.popup__photo');
@@ -136,9 +136,9 @@ var createFragment = function (advertisement) {
 var createPins = function (arr) {
   var fragment = document.createDocumentFragment();
 
-  for(var i = 0; i < arr.length; i++) {
+  for (var i = 0; i < arr.length; i++) {
     fragment.appendChild(fillPins(arr[i]));
-  };
+  }
 
   createFragment(arr[0]);
 
