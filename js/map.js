@@ -24,15 +24,13 @@ var PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
 
-
-
 var template = document.querySelector('template');
 var mapPins = document.querySelector('.map__pins');
 
 var onPopupEscPress = function (evt) {
   if (evt.keyCode === 27) {
     closePopup();
-  };
+  }
 };
 
 var openPopup = function (element) {
@@ -169,9 +167,9 @@ var createPins = function (arr) {
 };
 
 var fieldsets = document.querySelectorAll('fieldset');
-for(var i = 0; i < fieldsets.length; i++) {
+for (var i = 0; i < fieldsets.length; i++) {
   fieldsets[i].disabled = true;
-};
+}
 
 var mainPin = document.querySelector('.map__pin--main');
 var adForm = document.querySelector('.ad-form');
@@ -182,8 +180,8 @@ addressInput.value = (mainPin.offsetLeft + 32) + ', ' + (mainPin.offsetTop + 32)
 var onMainPinActiveteSite = function () {
   document.querySelector('.map').classList.remove('map--faded');
   createPins(renderAdvertisements());
-  for(var i = 0; i < fieldsets.length; i++) {
-    fieldsets[i].disabled = false;
+  for (var j = 0; j < fieldsets.length; j++) {
+    fieldsets[j].disabled = false;
   }
   addressInput.value = (mainPin.offsetLeft + 32) + ', ' + (mainPin.offsetTop + 87);
   adForm.classList.remove('ad-form--disabled');
