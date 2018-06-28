@@ -24,27 +24,39 @@ var PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
 
-document.querySelector('.map').classList.remove('map--faded');
-
 var template = document.querySelector('template');
 var mapPins = document.querySelector('.map__pins');
+
+var onPopupEscPress = function (evt) {
+  if (evt.keyCode === 27) {
+    closePopup();
+  }
+};
+
+var openPopup = function (element) {
+  if (document.querySelector('.map__card')) {
+    document.querySelector('.map__card').remove();
+  }
+
+  createFragment(element);
+
+  document.addEventListener('keydown', onPopupEscPress);
+};
+
+var closePopup = function () {
+  document.querySelector('.map__card').remove();
+  document.removeEventListener('keydown', onPopupEscPress);
+};
 
 var renderValue = function (min, max) {
   return Math.round(Math.random() * (max - min) + min);
 };
 
-// var renderValue = function (arr) {
-//   return arr.splice(Math.round(Math.random() * (arr.length - 1)), 1);
-// };
-
-// var advertisementType = function () {
-//   if advertisement
-// };
-
 var createFeatures = function (arr) {
   var copyArr = arr.slice();
   var featuresElement = [];
   var featuresElementLength = renderValue(0, copyArr.length - 1);
+
   for (var i = 0; i < featuresElementLength; i++) {
     featuresElement[i] = String(copyArr.splice(renderValue(0, copyArr.length - 1), 1));
   }
@@ -52,6 +64,7 @@ var createFeatures = function (arr) {
   return featuresElement;
 };
 
+// создание объектов, соответствующих другим предложениям
 var renderAdvertisements = function () {
   var advertisements = [];
 
@@ -87,6 +100,7 @@ var renderAdvertisements = function () {
   return advertisements;
 };
 
+// создание маркера
 var fillPins = function (advertisement) {
 
   var pin = template.content.querySelector('.map__pin').cloneNode(true);
@@ -95,9 +109,14 @@ var fillPins = function (advertisement) {
   pin.querySelector('img').src = advertisement.author;
   pin.querySelector('img').alt = advertisement.title;
 
+  pin.addEventListener('click', function () {
+    openPopup(advertisement);
+  });
+
   return pin;
 };
 
+// отрисовка карточки
 var createFragment = function (advertisement) {
 
   var fragment = template.content.querySelector('.map__card').cloneNode(true);
@@ -130,9 +149,13 @@ var createFragment = function (advertisement) {
     fragment.querySelector('.popup__photos').appendChild(galleryPhotos[i]);
   }
 
+  var closeButton = fragment.querySelector('.popup__close');
+  closeButton.addEventListener('click', closePopup);
+
   document.querySelector('.map').insertBefore(fragment, document.querySelector('.map__filters-container'));
 };
 
+// отрисовка маркеров на карте
 var createPins = function (arr) {
   var fragment = document.createDocumentFragment();
 
@@ -140,9 +163,30 @@ var createPins = function (arr) {
     fragment.appendChild(fillPins(arr[i]));
   }
 
-  createFragment(arr[0]);
-
   return mapPins.appendChild(fragment);
 };
 
-createPins(renderAdvertisements());
+var fieldsets = document.querySelectorAll('fieldset');
+for (var i = 0; i < fieldsets.length; i++) {
+  fieldsets[i].disabled = true;
+}
+
+var mainPin = document.querySelector('.map__pin--main');
+var adForm = document.querySelector('.ad-form');
+
+var addressInput = document.querySelector('#address');
+addressInput.value = (mainPin.offsetLeft + 32) + ', ' + (mainPin.offsetTop + 32);
+
+var onMainPinActiveteSite = function () {
+  document.querySelector('.map').classList.remove('map--faded');
+  createPins(renderAdvertisements());
+  for (var j = 0; j < fieldsets.length; j++) {
+    fieldsets[j].disabled = false;
+  }
+  addressInput.value = (mainPin.offsetLeft + 32) + ', ' + (mainPin.offsetTop + 87);
+  adForm.classList.remove('ad-form--disabled');
+  mainPin.removeEventListener('mouseup', onMainPinActiveteSite);
+};
+
+mainPin.addEventListener('mouseup', onMainPinActiveteSite);
+
