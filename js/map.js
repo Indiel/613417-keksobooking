@@ -296,8 +296,8 @@ var formCapacity = adForm.querySelector('#capacity');
 var onformRoomChange = function () {
   switch (formRoom.value) {
     case '100':
-      for (var i = 0; i < formCapacity.children.length - 1; i++) {
-        formCapacity.children[i].disabled = true;
+      for (var m = 0; m < formCapacity.children.length - 1; m++) {
+        formCapacity.children[m].disabled = true;
       }
       formCapacity.children[3].disabled = false;
       formCapacity.children[3].selected = true;
@@ -310,8 +310,8 @@ var onformRoomChange = function () {
       formCapacity.children[2].selected = true;
       break;
     case '2':
-      for (var k = 0; k < formCapacity.children.length; k++) {
-        formCapacity.children[k].disabled = true;
+      for (var t = 0; t < formCapacity.children.length; t++) {
+        formCapacity.children[t].disabled = true;
       }
       formCapacity.children[1].disabled = false;
       formCapacity.children[2].disabled = false;
