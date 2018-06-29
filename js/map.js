@@ -171,6 +171,11 @@ for (var i = 0; i < fieldsets.length; i++) {
   fieldsets[i].disabled = true;
 }
 
+var mapFilters = document.querySelectorAll('.map__filter');
+for (var k = 0; k < mapFilters.length; k++) {
+  mapFilters[k].disabled = true;
+}
+
 var mainPin = document.querySelector('.map__pin--main');
 var adForm = document.querySelector('.ad-form');
 
@@ -183,10 +188,149 @@ var onMainPinActiveteSite = function () {
   for (var j = 0; j < fieldsets.length; j++) {
     fieldsets[j].disabled = false;
   }
+  for (var l = 0; l < mapFilters.length; l++) {
+    mapFilters[l].disabled = false;
+  }
   addressInput.value = (mainPin.offsetLeft + 32) + ', ' + (mainPin.offsetTop + 87);
   adForm.classList.remove('ad-form--disabled');
   mainPin.removeEventListener('mouseup', onMainPinActiveteSite);
+
+  onformRoomChange();
 };
 
 mainPin.addEventListener('mouseup', onMainPinActiveteSite);
 
+var formTitle = adForm.querySelector('#title');
+
+formTitle.addEventListener('input', function () {
+  if (formTitle.value.length < 30) {
+    formTitle.setCustomValidity('Имя должно состоять минимум из 30 символов. Введено: ' + formTitle.value.length);
+    formTitle.style.border = '2px solid red';
+  } else if (formTitle.value.length > 100) {
+    formTitle.setCustomValidity('Имя не должно превышать 100 символов. Введено: ' + formTitle.value.length);
+    formTitle.style.border = '2px solid red';
+  } else {
+    formTitle.setCustomValidity('');
+    formTitle.style.border = '';
+  }
+});
+
+var formType = adForm.querySelector('#type');
+var formPrice = adForm.querySelector('#price');
+
+var onformTypeChange = function () {
+  formPrice.setCustomValidity('');
+  formPrice.style.border = '';
+  switch (formType.value) {
+    case 'flat':
+      formPrice.min = 1000;
+      if (formPrice < formPrice.min) {
+        formPrice.setCustomValidity('Для типа жилья ' + formType['1'].textContent + ' цена должна быть не ниже ' + formPrice.min + '.');
+        formPrice.style.border = '2px solid red';
+      }
+    break;
+    case 'house':
+      formPrice.min = 5000;
+      if (formPrice < formPrice.min) {
+        formPrice.setCustomValidity('Для типа жилья ' + formType['2'].textContent + ' цена должна быть не ниже ' + formPrice.min + '.');
+        formPrice.style.border = '2px solid red';
+      }
+    break;
+    case 'palace':
+      formPrice.min = 10000;
+      if (formPrice < formPrice.min) {
+        formPrice.setCustomValidity('Для типа жилья ' + formType['3'].textContent + ' цена должна быть не ниже ' + formPrice.min + '.');
+        formPrice.style.border = '2px solid red';
+      }
+    break;
+    case 'bungalo':
+      formPrice.min = 0;
+      if (formPrice < formPrice.min) {
+        formPrice.setCustomValidity('Для типа жилья ' + formType['0'].textContent + ' цена должна быть не ниже ' + formPrice.min + '.');
+        formPrice.style.border = '2px solid red';
+      }
+    break;
+  }
+};
+
+formType.addEventListener('input', onformTypeChange);
+formPrice.addEventListener('input', onformTypeChange);
+
+var timein = adForm.querySelector('#timein');
+var timeout = adForm.querySelector('#timeout');
+var formTimes = [timein, timeout];
+
+var onformTimesChange = function (target) {
+  var targetElement = formTimes.indexOf(target);
+  var anotherElement;
+  if (targetElement === 0) {
+    anotherElement = 1;
+  } else {
+    anotherElement = 0;
+  }
+
+  if (formTimes[targetElement].value === '12:00') {
+    formTimes[anotherElement].value = '12:00';
+  } else if (formTimes[targetElement].value === '13:00') {
+    formTimes[anotherElement].value = '13:00';
+  } else if (formTimes[targetElement].value === '14:00') {
+    formTimes[anotherElement].value = '14:00';
+  }
+};
+
+timein.addEventListener('change', function (evt) {
+  var target = eval(evt.target.name);
+  onformTimesChange(target);
+});
+
+timeout.addEventListener('change', function (evt) {
+  var target = eval(evt.target.name);
+  onformTimesChange(target);
+});
+
+var formRoom = adForm.querySelector('#room_number');
+var formCapacity = adForm.querySelector('#capacity');
+
+var onformRoomChange = function () {
+  switch (formRoom.value) {
+    case '100':
+      for (var i = 0; i < formCapacity.children.length - 1; i++) {
+        formCapacity.children[i].disabled = true;
+      }
+      formCapacity.children[3].disabled = false;
+      formCapacity.children[3].selected = true;
+    break;
+    case '1':
+      for (var i = 0; i < formCapacity.children.length; i++) {
+        formCapacity.children[i].disabled = true;
+      }
+      formCapacity.children[2].disabled = false;
+      formCapacity.children[2].selected = true;
+    break;
+    case '2':
+      for (var i = 0; i < formCapacity.children.length; i++) {
+        formCapacity.children[i].disabled = true;
+      }
+      formCapacity.children[1].disabled = false;
+      formCapacity.children[2].disabled = false;
+      formCapacity.children[1].selected = true;
+    break;
+    case '3':
+      for (var i = 0; i < formCapacity.children.length; i++) {
+        formCapacity.children[i].disabled = false;
+      }
+      formCapacity.children[3].disabled = true;
+      formCapacity.children[0].selected = true;
+    break;
+  }
+};
+
+formRoom.addEventListener('change', function () {
+  onformRoomChange();
+});
+
+adForm.addEventListener('invalid', function (evt) {
+  if (evt.target.localName === 'input') {
+    evt.target.style.border = '2px solid red';
+  }
+}, true);
