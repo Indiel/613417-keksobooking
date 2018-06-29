@@ -228,28 +228,28 @@ var onformTypeChange = function () {
         formPrice.setCustomValidity('Для типа жилья ' + formType['1'].textContent + ' цена должна быть не ниже ' + formPrice.min + '.');
         formPrice.style.border = '2px solid red';
       }
-    break;
+      break;
     case 'house':
       formPrice.min = 5000;
       if (formPrice < formPrice.min) {
         formPrice.setCustomValidity('Для типа жилья ' + formType['2'].textContent + ' цена должна быть не ниже ' + formPrice.min + '.');
         formPrice.style.border = '2px solid red';
       }
-    break;
+      break;
     case 'palace':
       formPrice.min = 10000;
       if (formPrice < formPrice.min) {
         formPrice.setCustomValidity('Для типа жилья ' + formType['3'].textContent + ' цена должна быть не ниже ' + formPrice.min + '.');
         formPrice.style.border = '2px solid red';
       }
-    break;
+      break;
     case 'bungalo':
       formPrice.min = 0;
       if (formPrice < formPrice.min) {
         formPrice.setCustomValidity('Для типа жилья ' + formType['0'].textContent + ' цена должна быть не ниже ' + formPrice.min + '.');
         formPrice.style.border = '2px solid red';
       }
-    break;
+      break;
   }
 };
 
@@ -279,12 +279,14 @@ var onformTimesChange = function (target) {
 };
 
 timein.addEventListener('change', function (evt) {
-  var target = eval(evt.target.name);
+  // var target = eval(evt.target.name);
+  var target = window[evt.target.name];
   onformTimesChange(target);
 });
 
 timeout.addEventListener('change', function (evt) {
-  var target = eval(evt.target.name);
+  // var target = eval(evt.target.name);
+  var target = window[evt.target.name];
   onformTimesChange(target);
 });
 
@@ -299,29 +301,29 @@ var onformRoomChange = function () {
       }
       formCapacity.children[3].disabled = false;
       formCapacity.children[3].selected = true;
-    break;
+      break;
     case '1':
-      for (var i = 0; i < formCapacity.children.length; i++) {
-        formCapacity.children[i].disabled = true;
+      for (var j = 0; j < formCapacity.children.length; j++) {
+        formCapacity.children[j].disabled = true;
       }
       formCapacity.children[2].disabled = false;
       formCapacity.children[2].selected = true;
-    break;
+      break;
     case '2':
-      for (var i = 0; i < formCapacity.children.length; i++) {
-        formCapacity.children[i].disabled = true;
+      for (var k = 0; k < formCapacity.children.length; k++) {
+        formCapacity.children[k].disabled = true;
       }
       formCapacity.children[1].disabled = false;
       formCapacity.children[2].disabled = false;
       formCapacity.children[1].selected = true;
-    break;
+      break;
     case '3':
-      for (var i = 0; i < formCapacity.children.length; i++) {
-        formCapacity.children[i].disabled = false;
+      for (var l = 0; l < formCapacity.children.length; l++) {
+        formCapacity.children[l].disabled = false;
       }
       formCapacity.children[3].disabled = true;
       formCapacity.children[0].selected = true;
-    break;
+      break;
   }
 };
 
