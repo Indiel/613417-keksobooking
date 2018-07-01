@@ -182,23 +182,72 @@ var adForm = document.querySelector('.ad-form');
 var addressInput = document.querySelector('#address');
 addressInput.value = (mainPin.offsetLeft + 32) + ', ' + (mainPin.offsetTop + 32);
 
-var onMainPinActiveteSite = function () {
-  document.querySelector('.map').classList.remove('map--faded');
-  createPins(renderAdvertisements());
-  for (var j = 0; j < fieldsets.length; j++) {
-    fieldsets[j].disabled = false;
-  }
-  for (var l = 0; l < mapFilters.length; l++) {
-    mapFilters[l].disabled = false;
-  }
-  addressInput.value = (mainPin.offsetLeft + 32) + ', ' + (mainPin.offsetTop + 87);
-  adForm.classList.remove('ad-form--disabled');
-  mainPin.removeEventListener('mouseup', onMainPinActiveteSite);
+// var areaMainPin = mapPins.style.paddingTop = '160px';
+// var mapOverlay = document.querySelector('.map__overlay');
 
-  onformRoomChange();
-};
+mainPin.addEventListener('mousedown', function (evt) {
+  evt.preventDefault();
 
-mainPin.addEventListener('mouseup', onMainPinActiveteSite);
+  var startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
+
+  var onMainPinActiveteSite = function () {
+    document.querySelector('.map').classList.remove('map--faded');
+    createPins(renderAdvertisements());
+    for (var j = 0; j < fieldsets.length; j++) {
+      fieldsets[j].disabled = false;
+    }
+    for (var l = 0; l < mapFilters.length; l++) {
+      mapFilters[l].disabled = false;
+    }
+    addressInput.value = (mainPin.offsetLeft + 32) + ', ' + (mainPin.offsetTop + 85);
+    adForm.classList.remove('ad-form--disabled');
+    mainPin.removeEventListener('mouseup', onMainPinActiveteSite);
+
+    onformRoomChange();
+  };
+
+  var onMouseMove = function (moveEvt) {
+    moveEvt.preventDefault();
+
+    var shift = {
+      x: startCoords.x - moveEvt.clientX,
+      y: startCoords.y - moveEvt.clientY
+    };
+
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
+
+    var pinCoords = {
+      x: mainPin.offsetLeft - shift.x,
+      y: mainPin.offsetTop - shift.y
+    };
+
+    if (pinCoords.y >= (130 - 65) && pinCoords.y <= 630) {
+      mainPin.style.left = pinCoords.x + 'px';
+      mainPin.style.top = pinCoords.y + 'px';
+      addressInput.value = (pinCoords.x + 32) + ', ' + (pinCoords.y + 85);
+    }
+  };
+
+  var onMouseUp = function (upEvt) {
+    upEvt.preventDefault();
+
+    mapPins.removeEventListener('mousemove', onMouseMove);
+    mapPins.removeEventListener('mouseup', onMouseUp);
+  };
+
+  if (document.querySelector('.map').classList.contains('map--faded')) {
+    onMainPinActiveteSite();
+  }
+
+  mapPins.addEventListener('mousemove', onMouseMove);
+  mapPins.addEventListener('mouseup', onMouseUp);
+});
 
 var formTitle = adForm.querySelector('#title');
 
@@ -219,41 +268,51 @@ var formType = adForm.querySelector('#type');
 var formPrice = adForm.querySelector('#price');
 
 var onformTypeChange = function () {
-  formPrice.setCustomValidity('');
-  formPrice.style.border = '';
   switch (formType.value) {
     case 'flat':
       formPrice.min = 1000;
-      if (formPrice < formPrice.min) {
+      if (Number(formPrice.value) < Number(formPrice.min)) {
         formPrice.setCustomValidity('Для типа жилья ' + formType['1'].textContent + ' цена должна быть не ниже ' + formPrice.min + '.');
         formPrice.style.border = '2px solid red';
+      } else {
+        formPrice.setCustomValidity('');
+        formPrice.style.border = '';
       }
       break;
     case 'house':
       formPrice.min = 5000;
-      if (formPrice < formPrice.min) {
+      if (Number(formPrice.value) < Number(formPrice.min)) {
         formPrice.setCustomValidity('Для типа жилья ' + formType['2'].textContent + ' цена должна быть не ниже ' + formPrice.min + '.');
         formPrice.style.border = '2px solid red';
+      } else {
+        formPrice.setCustomValidity('');
+        formPrice.style.border = '';
       }
       break;
     case 'palace':
       formPrice.min = 10000;
-      if (formPrice < formPrice.min) {
+      if (Number(formPrice.value) < Number(formPrice.min)) {
         formPrice.setCustomValidity('Для типа жилья ' + formType['3'].textContent + ' цена должна быть не ниже ' + formPrice.min + '.');
         formPrice.style.border = '2px solid red';
+      } else {
+        formPrice.setCustomValidity('');
+        formPrice.style.border = '';
       }
       break;
     case 'bungalo':
       formPrice.min = 0;
-      if (formPrice < formPrice.min) {
+      if (Number(formPrice.value) < Number(formPrice.min)) {
         formPrice.setCustomValidity('Для типа жилья ' + formType['0'].textContent + ' цена должна быть не ниже ' + formPrice.min + '.');
         formPrice.style.border = '2px solid red';
+      } else {
+        formPrice.setCustomValidity('');
+        formPrice.style.border = '';
       }
       break;
   }
 };
 
-formType.addEventListener('input', onformTypeChange);
+formType.addEventListener('change', onformTypeChange);
 formPrice.addEventListener('input', onformTypeChange);
 
 var timein = adForm.querySelector('#timein');
@@ -336,3 +395,14 @@ adForm.addEventListener('invalid', function (evt) {
     evt.target.style.border = '2px solid red';
   }
 }, true);
+
+var reset = adForm.querySelector('.ad-form__reset');
+
+reset.addEventListener('click', function () {
+  onformTypeChange();
+  formTitle.style.border = '';
+  formPrice.style.border = '';
+  mainPin.style.left = 570 + 'px';
+  mainPin.style.top = 375 + 'px';
+  addressInput.value = (570 + 32) + ', ' + (375 + 85);
+});
