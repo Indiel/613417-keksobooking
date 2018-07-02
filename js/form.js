@@ -142,7 +142,7 @@
   };
 
   formRoom.addEventListener('change', function () {
-    onformRoomChange();
+    window.onformRoomChange();
   });
 
   adForm.addEventListener('invalid', function (evt) {

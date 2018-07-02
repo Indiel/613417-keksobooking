@@ -24,7 +24,7 @@
       document.querySelector('.map__card').remove();
       document.removeEventListener('keydown', onPopupEscPress);
     }
-  }
+  };
 
   var fieldsets = document.querySelectorAll('fieldset');
   for (var i = 0; i < fieldsets.length; i++) {
