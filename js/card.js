@@ -9,7 +9,7 @@
 
     var fragment = template.content.querySelector('.map__card').cloneNode(true);
 
-    fragment.querySelector('.popup__avatar').src = advertisement.author;
+    fragment.querySelector('.popup__avatar').src = advertisement.author.avatar;
     fragment.querySelector('.popup__title').textContent = advertisement.offer.title;
     fragment.querySelector('.popup__text--address').textContent = advertisement.offer.address;
     fragment.querySelector('.popup__text--price').textContent = advertisement.offer.price + ' ₽/ночь';
