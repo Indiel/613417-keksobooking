@@ -11,7 +11,7 @@
     var pin = template.content.querySelector('.map__pin').cloneNode(true);
 
     pin.style = 'left: ' + (advertisement.location.x - 25) + 'px; top: ' + (advertisement.location.y - 70) + 'px;';
-    pin.querySelector('img').src = advertisement.author;
+    pin.querySelector('img').src = advertisement.author.avatar;
     pin.querySelector('img').alt = advertisement.title;
 
     pin.addEventListener('click', function () {

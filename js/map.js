@@ -53,7 +53,9 @@
 
     var onMainPinActiveteSite = function () {
       document.querySelector('.map').classList.remove('map--faded');
-      window.createPins(window.renderAdvertisements());
+
+      window.backend.download(window.createPins, window.backend.onError);
+
       for (var j = 0; j < fieldsets.length; j++) {
         fieldsets[j].disabled = false;
       }

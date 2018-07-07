@@ -157,8 +157,7 @@
   var mainPin = document.querySelector('.map__pin--main');
   var addressInput = document.querySelector('#address');
 
-  reset.addEventListener('click', function (evt) {
-    evt.preventDefault();
+  var resetForm = function () {
     adForm.reset();
 
     formTitle.style.border = '';
@@ -169,6 +168,16 @@
     mainPin.style.top = 375 + 'px';
     addressInput.value = (570 + 32) + ', ' + (375 + 85);
     window.onformRoomChange();
+  };
+
+  reset.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    resetForm();
+  });
+
+  adForm.addEventListener('submit', function (evt) {
+    window.backend.upload(new FormData(adForm), resetForm, window.backend.onError);
+    evt.preventDefault();
   });
 
 })();
