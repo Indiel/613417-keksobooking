@@ -50,7 +50,7 @@
       xhr.open('GET', URL_DOWNLOAD);
       xhr.send();
     },
-  upload: function (data, onLoad, onError) {
+    upload: function (data, onLoad, onError) {
       var xhr = new XMLHttpRequest();
 
       xhr.responseType = 'json';

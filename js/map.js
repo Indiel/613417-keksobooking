@@ -54,7 +54,7 @@
     var onMainPinActiveteSite = function () {
       document.querySelector('.map').classList.remove('map--faded');
 
-      window.backend.download(createPins, window.backend.onError);
+      window.backend.download(window.createPins, window.backend.onError);
 
       for (var j = 0; j < fieldsets.length; j++) {
         fieldsets[j].disabled = false;
