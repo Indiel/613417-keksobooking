@@ -64,7 +64,7 @@
 
     var checkedFeature = [].filter.call(mapFeature, function (feature) {
       return feature.checked === true;
-    }).map (function (feature) {
+    }).map(function (feature) {
       return feature.value;
     });
 
@@ -73,7 +73,7 @@
       features.forEach(function (item) {
         checkedFeature.forEach(function (itemCheck) {
           if (item === itemCheck) {
-            count ++;
+            count++;
           }
         });
       });
@@ -86,8 +86,10 @@
         && (Number(housingRooms.value) === advert.offer.rooms || housingRooms.value === 'any')
         && (Number(housingGuests.value) === advert.offer.guests || housingGuests.value === 'any')
         && reviewFeature(advert.offer.features)) {
-          return advert;
-        }
+        return advert;
+      } else {
+        return 0;
+      }
     });
     window.createPins(filterArr);
   });
