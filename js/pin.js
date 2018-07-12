@@ -32,4 +32,64 @@
     return mapPins.appendChild(fragment);
   };
 
+  var housingType = document.querySelector('#housing-type');
+  var housingPrice = document.querySelector('#housing-price');
+  var housingRooms = document.querySelector('#housing-rooms');
+  var housingGuests = document.querySelector('#housing-guests');
+  var mapFeature = document.querySelectorAll('.map__checkbox');
+
+  var mapFilter = document.querySelector('.map__filters');
+
+  mapFilter.addEventListener('change', function () {
+
+    var pins = mapPins.querySelectorAll('button[type="button"]');
+    for (var i = 0; i < pins.length; i++) {
+      mapPins.removeChild(pins[i]);
+    }
+
+    var stringToPrice = {
+      'low': function (price) {
+        return price < 10000 ? true : false;
+      },
+      'middle': function (price) {
+        return price >= 10000 && price <= 50000 ? true : false;
+      },
+      'high': function (price) {
+        return price > 50000 ? true : false;
+      },
+      'any': function () {
+        return true;
+      }
+    };
+
+    var checkedFeature = [].filter.call(mapFeature, function (feature) {
+      return feature.checked === true;
+    }).map (function (feature) {
+      return feature.value;
+    });
+
+    var reviewFeature = function (features) {
+      var count = 0;
+      features.forEach(function (item) {
+        checkedFeature.forEach(function (itemCheck) {
+          if (item === itemCheck) {
+            count ++;
+          }
+        });
+      });
+      return count === checkedFeature.length ? true : false;
+    };
+
+    var filterArr = window.adverts.filter(function (advert) {
+      if ((housingType.value === advert.offer.type || housingType.value === 'any')
+        && stringToPrice[housingPrice.value](advert.offer.price)
+        && (Number(housingRooms.value) === advert.offer.rooms || housingRooms.value === 'any')
+        && (Number(housingGuests.value) === advert.offer.guests || housingGuests.value === 'any')
+        && reviewFeature(advert.offer.features)) {
+          return advert;
+        }
+    });
+    window.createPins(filterArr);
+  });
+
 })();

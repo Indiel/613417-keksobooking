@@ -36,6 +36,13 @@
     mapFilters[k].disabled = true;
   }
 
+  window.adverts = [];
+
+  var onLoad = function (arr) {
+    window.adverts = arr.slice();
+    window.createPins(window.adverts);
+  };
+
   // движение пина
   var mainPin = document.querySelector('.map__pin--main');
   var adForm = document.querySelector('.ad-form');
@@ -51,10 +58,11 @@
       y: evt.clientY
     };
 
+    // активация сайта
     var onMainPinActiveteSite = function () {
       document.querySelector('.map').classList.remove('map--faded');
 
-      window.backend.download(window.createPins, window.backend.onError);
+      window.backend.download(onLoad, window.backend.onError);
 
       for (var j = 0; j < fieldsets.length; j++) {
         fieldsets[j].disabled = false;
