@@ -1246,3 +1246,15 @@ fieldset {
   color: white;
   font-size: 30px;
 }
+
+.placeholder {
+  width: 0;
+  height: 70px;
+  margin-right: 10px;
+  border: 2px dashed #ff6d51;
+}
+
+.hiddenElem {
+  opacity: 0;
+  margin-right: -70px;
+}

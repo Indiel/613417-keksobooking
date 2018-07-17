@@ -157,6 +157,8 @@
   var mainPin = document.querySelector('.map__pin--main');
   var addressInput = document.querySelector('#address');
 
+  var photoContainer = document.querySelector('.ad-form__photo-container');
+
   var resetForm = function () {
     adForm.reset();
 
@@ -168,6 +170,12 @@
     mainPin.style.top = 375 + 'px';
     addressInput.value = (570 + 32) + ', ' + (375 + 85);
     window.onformRoomChange();
+
+    var arrImgLength = photoContainer.children.length;
+    for (var i = 1; i < arrImgLength; i++) {
+      photoContainer.children[1].remove();
+    }
+    photoContainer.appendChild(window.adPhoto);
   };
 
   reset.addEventListener('click', function (evt) {
